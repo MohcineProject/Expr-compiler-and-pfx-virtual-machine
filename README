@@ -3,30 +3,37 @@ AUTHORS
 
 - Zahdi Mohcine
 - Pham Hai-Nguyen
-…
 
 ===============
 
 Description of the project
 --------------------------
 
-The project focuses on developing a compiler for simple arithmetic equations, with plans to introduce complexity later on. The compiler follows the structure of a virtual machine, where code is not compiled directly into native machine language. Instead, it is first compiled into a low-level programming language and then executed within a virtual machine. The languages utilized in this project are Expr and Pfx.
+The project is about building a tool that can understand simple math equations and eventually handle 
 
-In the explanatory section, we have documented our explanations in a LaTeX document. As for the coding aspect, we have completed the questions pertaining to basic arithmetic operations and tested them using Dune. The functional parts of the code are provided in separate directories named 'fun' within both language directories.
+more complicated ones (functions). Instead of directly translating the equations into the language 
 
-During development, we encountered issues with the lexer in the functional part of Pfx. It took some time to realize that nested regex patterns should not be used. The main challenge arose in a function created to parse a list of commands used in the lexer. Additionally, there may be potential problems in the newly generated function as it has not been thoroughly tested yet
+that computers understand, we first translate them into a simpler language that computers can work 
+
+with easily. Then, we run them on a virtual machine. We use two languages for this project: Expr and 
+
+Pfx. We wrote explanations about how everything works in a document using LaTeX. For the coding part,
+
+we tackled basic math operations (the functional part is not working correctly) and checked if they 
+
+work correctly using Dune. The code is organized neatly into folders (for the functions extensions 
+
+check folders named 'fun' for both languages.)
+
 
 ===============
 
 Sources
 -------
 
-Git repository: https://redmine-df.telecom-bretagne.eu/git/PROJECTNAME
+Git repository: https://github.com/MohcineProject/Expr-Compiler-.git
 
-(obviously, you _will_ use a version control system such as Git, IMT
-Atlantique provides a project management platform: use it!)
-
-Release : tag 1.0 or commit acdeacdacdacdacd
+(We did not use the git, we usually worked together in the same pc, thinking about the solution and implementing it)
 
 ===============
 
@@ -35,17 +42,27 @@ How to…
 
 …retrieve the sources?
 
-  git clone https://redmine-df.telecom-bretagne.eu/git/PROJECTNAME
+  git clone https://github.com/MohcineProject/Expr-Compiler-.git
 
-…compile?
+…compile and execute ?
 
-  dune …
+  for the pfx programs (that deal with simple stack operations no functions), you can execute 
+  programs written in the ok_prog.pfx file, you can modify the pfx code and test the virtual machine. 
 
-…execute and test?
+   dune exec pfx/pfxVM.exe -- pfx/basic/tests/ok_prog.pfx 
 
+  for the Expr programs, to compile them to pfx and execute them (again with just the simple arithmetic operations)
+  we use the file an_example.expr, you can modify the file and write new programs in Expr. 
+
+  dune exec expr/compiler.exe -- expr/basic/tests/an_example.expr
+
+
+
+… to test?
+  You can also use this command to run tests, however it would not work since we are still having trouble
+  in the fun folder. 
   dune utop and then use the libraries
-  (from project root) dune exec expr/main.exe -- expr/basic/tests/an_example.expr
-  dune exec ./pfxVM.exe -- TESTFILE.pfx -a 12 -a 52
+
 
 
 ===============
@@ -55,94 +72,124 @@ Structure of the project
 
 The project is organized as following:
 
-Explain here the organization of your project, what is the use of each file or
-group of files, etc.
+Here we explain the structure of our project
 
 You may also show the file tree as the following example:
-
-project
-├── README
+.
 ├── dune-project
-├── expr: the expr compiler
-│   ├── README
-│   ├── basic
+├── expr
+│   ├── basic                      : This is the main folder for the expr arithmetic operations
+│   │   ├── ast.ml                 : This is the AST of the expr
+│   │   ├── ast.mli                : This is the interface of the AST    
+│   │   ├── dune                    
+│   │   ├── eval.ml                 
+│   │   ├── eval.mli               
+│   │   ├── lexer.mll              
+│   │   ├── parser.mly             
+│   │   ├── tests                  
+│   │   │   └── an_example.expr    : The test file we use for compilation testing
+│   │   ├── toPfx.ml               : This is where we coded the generate function to compile expr AST to pfx AST
+│   │   └── toPfx.mli              
+│   ├── common                      
+│   │   ├── binOp.ml
+│   │   ├── binOp.mli
+│   │   └── dune
+│   ├── compiler.ml                : The file used to compile expr to pfx and print the result of the valuation: it uses our generate function in 'toPfx.ml'
+│   ├── dune
+│   ├── fun                        : The directory used for the functions extension
 │   │   ├── ast.ml
+│   │   ├── ast.mli
+│   │   ├── lexer.mll
+│   │   ├── parser.mly
+│   │   ├── toPfx.ml               : Here we updated the generate function to handle functions compilation (not tested yet and it should still require some patches)
+│   │   └── toPfx.mli
+│   ├── main.ml                    : This file is used to execute expr programs directly using expr own parser and lexer
+│   └── README
+├── pfx
+│   ├── archive
+│   │   └── lexer1.mll
+│   ├── basic
+│   │   ├── ast.ml                 : The AST of the pfx 
 │   │   ├── ast.mli
 │   │   ├── dune
 │   │   ├── eval.ml
 │   │   ├── eval.mli
 │   │   ├── lexer.mll
 │   │   ├── parser.mly
-│   │   ├── tests: for tests
-│   │   │   └── an_example.expr
-│   │   ├── toPfx.ml             <- To edit
-│   │   └── toPfx.mli
-│   ├── common
-│   │   ├── binOp.ml
-│   │   ├── binOp.mli
-│   │   └── dune
-│   ├── compiler.ml: main file for the expr compiler
+│   │   ├── test_lexer.txt 
+│   │   └── tests
+│   │       └── ok_prog.pfx        : The main test file for the pfx 
 │   ├── dune
-│   ├── fun: the expr parser for section 7
+│   ├── fun                        : The directory for the function extension
 │   │   ├── ast.ml
 │   │   ├── ast.mli
-│   │   ├── lexer.mll
-│   │   └── parser.mly
-│   └── main.ml
-├── pfx: the pfx VM
-│   ├── basic
-│   │   ├── ast.ml               <- To edit
-│   │   ├── ast.mli
 │   │   ├── dune
-│   │   ├── eval.ml              <- To edit
+│   │   ├── eval.ml
 │   │   ├── eval.mli
-│   │   ├── lexer.mll            <- To edit
-│   │   ├── parser.mly           <- To edit
-│   │   └── tests: for tests
-│   │       └── ok_prog.pfx
-│   └── pfxVM.ml: main file for the pfx VM
-└── utils
+│   │   ├── lexer.mll
+│   │   ├── ok_prog.pfx            
+│   │   └── parser.mly
+│   ├── main.ml                    : A file used for compiling a pfx program and printing the tokens. Used mainly to test the lexer
+│   └── pfxVM.ml                   : the file containing the virtual machine the execute the pfx program using the parser and the lexer
+├── README
+└── utils 
     ├── dune
-    ├── location.ml: module offering a data type for a location in a file
+    ├── location.ml                : A file used to determine the location of errors 
     └── location.mli
 ===============
 
 Progress
 --------
 
-- We stopped at question 10.1 (proof of derivation)
-- There is still a bug in question 8.3 (new version of generate function)
-- …
+- We stopped at question 12 (we did it)
+- There is still a bug in question 10.3 (new version of generate function)
+- And also In the extended lexer of pfx (more specifcally, there is a problem with a function to tokenize
+  sequence of commands)
 
 ===============
 
 Know bugs and issues
 --------------------
 
-- We were not able to manage xxx…
-- Compiler fails when xxx…
-- …
+- One difficulty that took us a lot of time is the new lexer of the pfx : 
+We tought about introducing seqences in the form of "Push [ (Sequence)]" But we found several problems 
+in the lexer we could not define a proper regexp to catch nested Sequences as in "Push [ ... Push [ ... ] ... ]"
+and we were not able to create a function to translate this commands from string to AST element 
+(to be more specific it is the function 'tokenize_command_str') 
+
+- Another problem that we encountred is with the new generate function in the fun directory of expr. 
+Altough we believe that the logic is correct according to our defined rules of transformation we 
+think that we did not handle correctly the recursive feature of the function to update the environment
+used to bind variables to their depths. 
+
+
 
 ===============
 
 Helpful resources
 -----------------
 
-- we used Stack Overflow to solve the problem of xxx :
-  https://stackoverflow/xxxxxxi
-  https://stackoverflow/yyyyyy
-- someone on GitHub provided an interesting example very similar to the answer of the question x.y : https://github.com/xxxx
-- …
+- we used this manual to understand more deeply the regexp syntaxe used by ocamllex 
+  
+  https://caml.inria.fr/pub/old_caml_site/ocaml/htmlman/manual026.html
+
+- We also looked into some other ressources, but the bug usually ended up to be a typo. 
 
 ===============
 
 Difficulties
 ------------
 
-- team programming: having to use a VCS such as git and avoiding conflicts
-- thinking functional
-- changing habits by using an unknown language
-- Not a single difficulty: the project was so easy that my 8-old brother did it
-  completely; the Ocaml language is so nice I enjoyed the project, …
-- …
+- The project was really beautiful, we enjoyed the realm of functional paradigm, everything seemed coherent
+- The problem was not that it was difficult, i genuinely think it is easy. The problem was in understanding
+the environment and the syntaxe (dune, regexp, the overall structure ...) they took a good amount of time 
+to try to understand them. 
+The already written code was very helpfu along the process 
+
+Futur: 
+------
+
+Since the project was beautiful we look forward to complete it, you can verify the provided gitlab 
+we will be sure also the put the latex document if renewed. 
+
 
