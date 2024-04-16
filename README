@@ -186,10 +186,73 @@ the environment and the syntaxe (dune, regexp, the overall structure ...) they t
 to try to understand them. 
 The already written code was very helpfu along the process 
 
+
+
+Notes on the code added : 
+-------------------------
+
+Exercice 4.1 : we added the type command in the mentionned directory pfx/basic/ast : it defines all the 
+needed operations used by the language. 
+
+Exercice 4.2 : we added the step function in the eval.ml file at the pfx/basic directory. It takes as 
+argument too lists (one for command and one for the stack) and modify the stack according to the top 
+command on the list. It deals as well with errors and returns error messages as defined in the semantics
+rules. 
+
+Exercice 5.2 : we added the function generate in the file toPfx.ml in the expr/basic directory. It defines
+how an expr ast should be translated into pfx ast and it is used to transform whole expr programs by the 
+compiler (at the expr/ ).
+
+Exercice 6.1 : we modified the lexer of the pfx and added the necessary rules to tokenize commands
+
+Exercice 7   : we added the location of the error to the error message printed by the lexer using the 
+location utility. 
+
+Exercice 8.1 : we added the pfx parser in the pfx/basic directory. The starting type is the "program"
+that can contain the number of arguments followed by the second defined type "command" which is a sequence
+of the tird defined type "operator" that represents the pfx commands. 
+
+Exercice 8.2 : we coded the necessary functions to print the sequence of commands. They are located 
+at the pfx/basic/ast.ml file. We used it on the pfx virtual machine to print the ast. (you can add
+the following line of code 
+        print_endline (BasicPfx.Ast.string_of_program pfx_prog);
+after line 16 to apply the printing 
+)
+
+Exercice 9.3 : For this exercice, we introduced a new AST where the 'Push' command can contain either 
+an integer or a list of commands, we defined both of them in a new type called 'element'. We added a 
+small patch to the string of functions so that we can print these new constructs as well. 
+
+we extended the lexer and the parser of pfx in the fun directory. We added the new regexp
+'command' to tokenize the nested sequences. We intended first to detect expressions of type 
+'Push [ ... Push [...] ... ]' in order to have a nested sequence inside another one. We fisrt tried 
+
+'let command = "Swap"|"Sub"|"Div"|"Mul"|"Rem"|"Add"|"Pop" | "Push" blank+ "[" blank+ (command blank+)+ blank+ "]" '
+
+But we found at the end that a nested regexp like this was not correct (i believe it was the lexer who gave us an error log that
+finally located the problem )
+
+We also added the function 'tokenize_command_str' that we intended to tokenize the sequence of commands (the 
+argument of the Push for nested sequences ) However there was a problem in referencing the lexer, and we 
+think the implementation needs revising (in this version we returned the list of tokens, we should have returned the 
+list of commands types )
+
+We added the detection of 'Exec' and 'Get' as well, we do not think there is a problem with that.
+
+For the parser, we did not apply major changes, we just added the new operators and changed the constructor
+of the 'PUSH' token. 
+
+Exercice 10.3 : For this one, we coded a new function generate in a copy of the 'toPfx.ml' in the fun directory
+of expr. this new function uses an environment (called env) to store the binding between variables and 
+their depths. We did not test the function yet, however we think there is an error in the way we matched
+the const pattern (the idea was that whenever we use a constant, we need to push it and therefore 
+we need somehow to modify the env of the whole program: there are too issues with this approach we think
+, first, this fact is not totally accurate, morelikely the env should change with the binary operations
+,second, even if the method is correct, the way we update the environment seems wrong as the update
+is not transmitted to the rest of the ast recursively ), Nontheless, the rest seems to be correct.
+
 Futur: 
 ------
 
 Since the project was beautiful we look forward to complete it, you can verify the provided gitlab 
 we will be sure also the put the latex document if renewed. 
-
-
