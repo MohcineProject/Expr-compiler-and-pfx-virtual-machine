@@ -1,2 +1,0 @@
-(** @canonical Utils.Location *)
-module Location = Utils__Location
