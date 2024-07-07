@@ -151,7 +151,7 @@ Progress
 
 ===============
 
-Know bugs and issues
+Known bugs and issues
 --------------------
 
 - One difficulty that took us a lot of time is the new lexer of the pfx : 
