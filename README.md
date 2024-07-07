@@ -75,7 +75,8 @@ The project is organized as following:
 Here we explain the structure of our project
 
 You may also show the file tree as the following example:
-.
+
+```
 ├── dune-project
 ├── expr
 │   ├── basic                      : This is the main folder for the expr arithmetic operations
@@ -136,6 +137,8 @@ You may also show the file tree as the following example:
     ├── dune
     ├── location.ml                : A file used to determine the location of errors 
     └── location.mli
+
+```
 ===============
 
 Progress
