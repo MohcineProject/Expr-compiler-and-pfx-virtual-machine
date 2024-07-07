@@ -42,27 +42,17 @@ How to…
 
 …retrieve the sources?
 
-  git clone https://github.com/MohcineProject/Expr-Compiler-.git
+  git clone https://github.com/MohcineProject/Expr-compiler-and-pfx-virtual-machine.git
 
-…compile and execute ?
+...compile and execute?
 
-  for the pfx programs (that deal with simple stack operations no functions), you can execute 
-  programs written in the ok_prog.pfx file, you can modify the pfx code and test the virtual machine. 
+For the PFX programs (involving simple stack operations without functions), you can compile and execute programs written in the `ok_prog.pfx` file. You can modify the PFX code inside this file and pass it to the virtual machine by running the following command:
 
-   dune exec pfx/pfxVM.exe -- pfx/basic/tests/ok_prog.pfx 
+    `dune exec pfx/pfxVM.exe -- pfx/basic/tests/ok_prog.pfx`
 
-  for the Expr programs, to compile them to pfx and execute them (again with just the simple arithmetic operations)
-  we use the file an_example.expr, you can modify the file and write new programs in Expr. 
+For Expr programs, to compile and execute them (again, with basic arithmetic operations), use the `an_example.expr` file. You can modify this file and write new programs in Expr.
 
-  dune exec expr/compiler.exe -- expr/basic/tests/an_example.expr
-
-
-
-… to test?
-  You can also use this command to run tests, however it would not work since we are still having trouble
-  in the fun folder. 
-  dune utop and then use the libraries
-
+    `dune exec expr/compiler.exe -- expr/basic/tests/an_example.expr`
 
 
 ===============
@@ -71,10 +61,6 @@ Structure of the project
 ------------------------
 
 The project is organized as following:
-
-Here we explain the structure of our project
-
-You may also show the file tree as the following example:
 
 ```
 ├── dune-project
@@ -146,7 +132,7 @@ Progress
 
 - We stopped at question 12 (we did it)
 - There is still a bug in question 10.3 (new version of generate function)
-- And also In the extended lexer of pfx (more specifcally, there is a problem with a function to tokenize
+- And also in the extended lexer of pfx (more specifcally, there is a problem with a function to tokenize
   sequence of commands)
 
 ===============
@@ -172,11 +158,10 @@ used to bind variables to their depths.
 Helpful resources
 -----------------
 
-- we used this manual to understand more deeply the regexp syntaxe used by ocamllex 
+- We used this manual to understand more deeply the regexp syntaxe used by ocamllex 
   
   https://caml.inria.fr/pub/old_caml_site/ocaml/htmlman/manual026.html
 
-- We also looked into some other ressources, but the bug usually ended up to be a typo. 
 
 ===============
 
@@ -185,10 +170,7 @@ Difficulties
 
 - The project was really beautiful, we enjoyed the realm of functional paradigm, everything seemed coherent
 - The problem was not that it was difficult, i genuinely think it is easy. The problem was in understanding
-the environment and the syntaxe (dune, regexp, the overall structure ...) they took a good amount of time 
-to try to understand them. 
-The already written code was very helpfu along the process 
-
+the environment and the syntaxe (dune, regexp, the overall structure ...) they took a a lot of time to understand them. 
 
 
 Notes on the code added : 
@@ -202,7 +184,7 @@ argument too lists (one for command and one for the stack) and modify the stack 
 command on the list. It deals as well with errors and returns error messages as defined in the semantics
 rules. 
 
-Exercice 5.2 : we added the function generate in the file toPfx.ml in the expr/basic directory. It defines
+Exercice 5.2 : we added the function "generate" in the file toPfx.ml in the expr/basic directory. It defines
 how an expr ast should be translated into pfx ast and it is used to transform whole expr programs by the 
 compiler (at the expr/ ).
 
@@ -236,7 +218,7 @@ But we found at the end that a nested regexp like this was not correct (i believ
 finally located the problem )
 
 We also added the function 'tokenize_command_str' that we intended to tokenize the sequence of commands (the 
-argument of the Push for nested sequences ) However there was a problem in referencing the lexer, and we 
+argument of the Push for nested sequences ). However there was a problem in referencing the lexer, and we 
 think the implementation needs revising (in this version we returned the list of tokens, we should have returned the 
 list of commands types )
 
@@ -245,8 +227,8 @@ We added the detection of 'Exec' and 'Get' as well, we do not think there is a p
 For the parser, we did not apply major changes, we just added the new operators and changed the constructor
 of the 'PUSH' token. 
 
-Exercice 10.3 : For this one, we coded a new function generate in a copy of the 'toPfx.ml' in the fun directory
-of expr. this new function uses an environment (called env) to store the binding between variables and 
+Exercice 10.3 : For this one, we coded a new function "generate" in a copy of the 'toPfx.ml' in the fun directory
+of expr. This new function uses an environment (called env) to store the binding between variables and 
 their depths. We did not test the function yet, however we think there is an error in the way we matched
 the const pattern (the idea was that whenever we use a constant, we need to push it and therefore 
 we need somehow to modify the env of the whole program: there are too issues with this approach we think
@@ -257,5 +239,4 @@ is not transmitted to the rest of the ast recursively ), Nontheless, the rest se
 Futur: 
 ------
 
-Since the project was beautiful we look forward to complete it, you can verify the provided gitlab 
-we will be sure also the put the latex document if renewed. 
+Since the project was beautiful we look forward to complete it. It gaves us a comprehensive understanding of the functional paradigm and provided us with practical knowledge of compilers. 
